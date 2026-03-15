@@ -75,16 +75,17 @@ def load_data(conn):
         cursor.execute("""
             INSERT INTO DM_AfterSalesReport (Period, Vin, CustomerName, Address, CountService, Priority)
             WITH cte AS (
-                SELECT 
-                    t.Vin,
+                SELECT
+                    c.ID,
                     c.Name,
                     ca.Address,
-                    t.ServiceTicket,
-                    t.ServiceDate,
-                    t.ServiceType
-                FROM AfterSales t
-                LEFT JOIN Customers c ON t.CustomerID = c.ID
+                    a.Vin,
+                    a.ServiceTicket,
+                    a.ServiceDate,
+                    a.ServiceType
+                FROM Customers c
                 LEFT JOIN CustomerAddresses ca ON c.ID = ca.CustomerID
+                LEFT JOIN AfterSales a ON c.ID = a.CustomerID
             ),
             service_count AS (
                 SELECT Vin, COUNT(ServiceType) AS CountService
@@ -92,20 +93,20 @@ def load_data(conn):
                 GROUP BY Vin
             )
             SELECT
-                DATE_FORMAT(cte.ServiceDate, '%Y-%m') AS Period,
+                COALESCE(DATE_FORMAT(cte.ServiceDate, '%Y-%m'), 'N/A') AS Period,
                 cte.Vin,
                 cte.Name AS CustomerName,
                 cte.Address,
-                sc.CountService,
-                CASE 
-                    WHEN sc.CountService > 10 THEN 'HIGH'
-                    WHEN sc.CountService BETWEEN 5 AND 10 THEN 'MED'
+                COALESCE(sc.CountService, 0) AS CountService,
+                CASE
+                    WHEN COALESCE(sc.CountService, 0) > 10 THEN 'HIGH'
+                    WHEN COALESCE(sc.CountService, 0) BETWEEN 5 AND 10 THEN 'MED'
                     ELSE 'LOW'
                 END AS Priority
             FROM cte
             LEFT JOIN service_count sc ON cte.Vin = sc.Vin
             GROUP BY
-                DATE_FORMAT(cte.ServiceDate, '%Y-%m'),
+                COALESCE(DATE_FORMAT(cte.ServiceDate, '%Y-%m'), 'N/A'),
                 cte.Vin,
                 CustomerName,
                 Address,
