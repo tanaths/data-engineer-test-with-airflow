@@ -1,0 +1,44 @@
+[2026-03-15T12:16:10.479+0000] {taskinstance.py:1956} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: ingestion_pipeline.upload_metadata manual__2026-03-15T12:16:06.257611+00:00 [queued]>
+[2026-03-15T12:16:10.502+0000] {taskinstance.py:1956} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: ingestion_pipeline.upload_metadata manual__2026-03-15T12:16:06.257611+00:00 [queued]>
+[2026-03-15T12:16:10.503+0000] {taskinstance.py:2170} INFO - Starting attempt 1 of 2
+[2026-03-15T12:16:10.544+0000] {taskinstance.py:2191} INFO - Executing <Task(PythonOperator): upload_metadata> on 2026-03-15 12:16:06.257611+00:00
+[2026-03-15T12:16:10.554+0000] {standard_task_runner.py:60} INFO - Started process 837 to run task
+[2026-03-15T12:16:10.560+0000] {standard_task_runner.py:87} INFO - Running: ['airflow', 'tasks', 'run', 'ingestion_pipeline', 'upload_metadata', 'manual__2026-03-15T12:16:06.257611+00:00', '--job-id', '9', '--raw', '--subdir', 'DAGS_FOLDER/orchestration_dag.py', '--cfg-path', '/tmp/tmpk3hrtq46']
+[2026-03-15T12:16:10.563+0000] {standard_task_runner.py:88} INFO - Job 9: Subtask upload_metadata
+[2026-03-15T12:16:10.798+0000] {task_command.py:423} INFO - Running <TaskInstance: ingestion_pipeline.upload_metadata manual__2026-03-15T12:16:06.257611+00:00 [running]> on host 3a186f53669c
+[2026-03-15T12:16:11.020+0000] {taskinstance.py:2480} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='airflow' AIRFLOW_CTX_DAG_ID='ingestion_pipeline' AIRFLOW_CTX_TASK_ID='upload_metadata' AIRFLOW_CTX_EXECUTION_DATE='2026-03-15T12:16:06.257611+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2026-03-15T12:16:06.257611+00:00'
+[2026-03-15T12:16:11.588+0000] {logging_mixin.py:188} INFO - [...] Connecting to MySQL
+[2026-03-15T12:16:11.590+0000] {taskinstance.py:2698} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.8/site-packages/mysql/connector/connection_cext.py", line 246, in _open_connection
+    self._cmysql.connect(**cnx_kwargs)
+_mysql_connector.MySQLInterfaceError: Can't connect to MySQL server on 'localhost:3306' (111)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.8/site-packages/airflow/models/taskinstance.py", line 433, in _execute_task
+    result = execute_callable(context=context, **execute_callable_kwargs)
+  File "/home/airflow/.local/lib/python3.8/site-packages/airflow/operators/python.py", line 199, in execute
+    return_value = self.execute_callable()
+  File "/home/airflow/.local/lib/python3.8/site-packages/airflow/operators/python.py", line 216, in execute_callable
+    return self.python_callable(*self.op_args, **self.op_kwargs)
+  File "/opt/airflow/dags/orchestration_dag.py", line 20, in run_metadata
+    metadata_upload.run()
+  File "/opt/airflow/dags/../scripts/metadata_upload.py", line 64, in run
+    conn = get_conn()
+  File "/opt/airflow/dags/../scripts/metadata_upload.py", line 17, in get_conn
+    return mysql.connector.connect(**DB_CONFIG)
+  File "/home/airflow/.local/lib/python3.8/site-packages/mysql/connector/__init__.py", line 272, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/home/airflow/.local/lib/python3.8/site-packages/mysql/connector/connection_cext.py", line 94, in __init__
+    self.connect(**kwargs)
+  File "/home/airflow/.local/lib/python3.8/site-packages/mysql/connector/abstracts.py", line 1052, in connect
+    self._open_connection()
+  File "/home/airflow/.local/lib/python3.8/site-packages/mysql/connector/connection_cext.py", line 251, in _open_connection
+    raise errors.get_mysql_exception(msg=exc.msg, errno=exc.errno,
+mysql.connector.errors.DatabaseError: 2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (111)
+[2026-03-15T12:16:11.621+0000] {taskinstance.py:1138} INFO - Marking task as UP_FOR_RETRY. dag_id=ingestion_pipeline, task_id=upload_metadata, execution_date=20260315T121606, start_date=20260315T121610, end_date=20260315T121611
+[2026-03-15T12:16:11.667+0000] {standard_task_runner.py:107} ERROR - Failed to execute job 9 for task upload_metadata (2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (111); 837)
+[2026-03-15T12:16:11.739+0000] {local_task_job_runner.py:234} INFO - Task exited with return code 1
+[2026-03-15T12:16:11.776+0000] {taskinstance.py:3280} INFO - 0 downstream tasks scheduled from follow-on schedule check

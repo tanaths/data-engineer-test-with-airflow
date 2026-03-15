@@ -1,0 +1,67 @@
+[2026-03-15T12:34:13.749+0000] {taskinstance.py:1956} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: ingestion_pipeline.transformation_data manual__2026-03-15T12:34:05.501989+00:00 [queued]>
+[2026-03-15T12:34:13.765+0000] {taskinstance.py:1956} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: ingestion_pipeline.transformation_data manual__2026-03-15T12:34:05.501989+00:00 [queued]>
+[2026-03-15T12:34:13.766+0000] {taskinstance.py:2170} INFO - Starting attempt 1 of 2
+[2026-03-15T12:34:13.812+0000] {taskinstance.py:2191} INFO - Executing <Task(PythonOperator): transformation_data> on 2026-03-15 12:34:05.501989+00:00
+[2026-03-15T12:34:13.822+0000] {standard_task_runner.py:60} INFO - Started process 1050 to run task
+[2026-03-15T12:34:13.827+0000] {standard_task_runner.py:87} INFO - Running: ['airflow', 'tasks', 'run', 'ingestion_pipeline', 'transformation_data', 'manual__2026-03-15T12:34:05.501989+00:00', '--job-id', '20', '--raw', '--subdir', 'DAGS_FOLDER/orchestration_dag.py', '--cfg-path', '/tmp/tmp2nsoorkg']
+[2026-03-15T12:34:13.831+0000] {standard_task_runner.py:88} INFO - Job 20: Subtask transformation_data
+[2026-03-15T12:34:13.946+0000] {task_command.py:423} INFO - Running <TaskInstance: ingestion_pipeline.transformation_data manual__2026-03-15T12:34:05.501989+00:00 [running]> on host 3a186f53669c
+[2026-03-15T12:34:14.102+0000] {taskinstance.py:2480} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='airflow' AIRFLOW_CTX_DAG_ID='ingestion_pipeline' AIRFLOW_CTX_TASK_ID='transformation_data' AIRFLOW_CTX_EXECUTION_DATE='2026-03-15T12:34:05.501989+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2026-03-15T12:34:05.501989+00:00'
+[2026-03-15T12:34:14.655+0000] {logging_mixin.py:188} WARNING - /opt/airflow/dags/../scripts/transformation2.py:202 UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+[2026-03-15T12:34:14.659+0000] {logging_mixin.py:188} INFO - [INFO] 4 table will be transformed
+[2026-03-15T12:34:14.669+0000] {logging_mixin.py:188} INFO - 
+=== customers_raw -> Customers (LoadType: FULL) ===
+[2026-03-15T12:34:14.672+0000] {logging_mixin.py:188} WARNING - /opt/airflow/dags/../scripts/transformation2.py:175 UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+[2026-03-15T12:34:14.676+0000] {logging_mixin.py:188} INFO - [OK] 4 columns from metadata
+[2026-03-15T12:34:14.678+0000] {logging_mixin.py:188} WARNING - /opt/airflow/dags/../scripts/transformation2.py:20 UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+[2026-03-15T12:34:14.684+0000] {logging_mixin.py:188} INFO - [OK] 6 rows from customers_raw
+[2026-03-15T12:34:14.686+0000] {logging_mixin.py:188} INFO - [DDL] CREATE TABLE IF NOT EXISTS `Customers` (`CreatedAt` DATETIME, `DateOfBirth` DATE, `ID` INT, `Name` VARCHAR(255))
+[2026-03-15T12:34:14.697+0000] {logging_mixin.py:188} INFO - [OK] Tabel Customers siap
+[2026-03-15T12:34:14.701+0000] {logging_mixin.py:188} INFO - [...] Applying standardize_date on DateOfBirth
+[2026-03-15T12:34:14.709+0000] {logging_mixin.py:188} INFO - [OK] transformation is done - shape: (6, 4)
+[2026-03-15T12:34:14.907+0000] {logging_mixin.py:188} INFO - [OK] Truncate Customers
+[2026-03-15T12:34:14.940+0000] {logging_mixin.py:188} INFO - [OK] 6 rows succedeed load in Customers
+[2026-03-15T12:34:14.941+0000] {logging_mixin.py:188} INFO - [DONE] Customers done
+[2026-03-15T12:34:14.952+0000] {logging_mixin.py:188} INFO - 
+=== sales_raw -> Sales (LoadType: FULL) ===
+[2026-03-15T12:34:14.954+0000] {logging_mixin.py:188} WARNING - /opt/airflow/dags/../scripts/transformation2.py:175 UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+[2026-03-15T12:34:14.958+0000] {logging_mixin.py:188} INFO - [OK] 6 columns from metadata
+[2026-03-15T12:34:14.960+0000] {logging_mixin.py:188} WARNING - /opt/airflow/dags/../scripts/transformation2.py:20 UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+[2026-03-15T12:34:14.966+0000] {logging_mixin.py:188} INFO - [OK] 5 rows from sales_raw
+[2026-03-15T12:34:14.968+0000] {logging_mixin.py:188} INFO - [DDL] CREATE TABLE IF NOT EXISTS `Sales` (`CreatedAt` DATETIME, `CustomerID` INT, `InvoiceDate` DATE, `Model` VARCHAR(50), `Price` DECIMAL(15,2), `Vin` VARCHAR(255))
+[2026-03-15T12:34:14.984+0000] {logging_mixin.py:188} INFO - [OK] Tabel Sales siap
+[2026-03-15T12:34:14.986+0000] {logging_mixin.py:188} INFO - [...] Applying standardize_date on InvoiceDate
+[2026-03-15T12:34:14.989+0000] {logging_mixin.py:188} INFO - [...] Applying standardize_price on Price
+[2026-03-15T12:34:14.994+0000] {logging_mixin.py:188} INFO - [OK] transformation is done - shape: (5, 6)
+[2026-03-15T12:34:15.223+0000] {logging_mixin.py:188} INFO - [OK] Truncate Sales
+[2026-03-15T12:34:15.256+0000] {logging_mixin.py:188} INFO - [OK] 5 rows succedeed load in Sales
+[2026-03-15T12:34:15.258+0000] {logging_mixin.py:188} INFO - [DONE] Sales done
+[2026-03-15T12:34:15.271+0000] {logging_mixin.py:188} INFO - 
+=== after_sales_raw -> AfterSales (LoadType: FULL) ===
+[2026-03-15T12:34:15.273+0000] {logging_mixin.py:188} WARNING - /opt/airflow/dags/../scripts/transformation2.py:175 UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+[2026-03-15T12:34:15.278+0000] {logging_mixin.py:188} INFO - [OK] 7 columns from metadata
+[2026-03-15T12:34:15.280+0000] {logging_mixin.py:188} WARNING - /opt/airflow/dags/../scripts/transformation2.py:20 UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+[2026-03-15T12:34:15.284+0000] {logging_mixin.py:188} INFO - [OK] 3 rows from after_sales_raw
+[2026-03-15T12:34:15.287+0000] {logging_mixin.py:188} INFO - [DDL] CREATE TABLE IF NOT EXISTS `AfterSales` (`CreatedAt` DATETIME, `CustomerID` INT, `Model` VARCHAR(255), `ServiceDate` DATE, `ServiceTicket` VARCHAR(50), `ServiceType` VARCHAR(50), `Vin` VARCHAR(255))
+[2026-03-15T12:34:15.304+0000] {logging_mixin.py:188} INFO - [OK] Tabel AfterSales siap
+[2026-03-15T12:34:15.310+0000] {logging_mixin.py:188} INFO - [...] Applying standardize_date on ServiceDate
+[2026-03-15T12:34:15.317+0000] {logging_mixin.py:188} INFO - [OK] transformation is done - shape: (3, 7)
+[2026-03-15T12:34:15.546+0000] {logging_mixin.py:188} INFO - [OK] Truncate AfterSales
+[2026-03-15T12:34:15.580+0000] {logging_mixin.py:188} INFO - [OK] 3 rows succedeed load in AfterSales
+[2026-03-15T12:34:15.582+0000] {logging_mixin.py:188} INFO - [DONE] AfterSales done
+[2026-03-15T12:34:15.593+0000] {logging_mixin.py:188} INFO - 
+=== customer_addresses -> CustomerAddresses (LoadType: FULL) ===
+[2026-03-15T12:34:15.595+0000] {logging_mixin.py:188} WARNING - /opt/airflow/dags/../scripts/transformation2.py:175 UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+[2026-03-15T12:34:15.601+0000] {logging_mixin.py:188} INFO - [OK] 6 columns from metadata
+[2026-03-15T12:34:15.604+0000] {logging_mixin.py:188} WARNING - /opt/airflow/dags/../scripts/transformation2.py:20 UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+[2026-03-15T12:34:15.614+0000] {logging_mixin.py:188} INFO - [OK] 4 rows from customer_addresses
+[2026-03-15T12:34:15.619+0000] {logging_mixin.py:188} INFO - [DDL] CREATE TABLE IF NOT EXISTS `CustomerAddresses` (`Address` VARCHAR(255), `City` VARCHAR(50), `CreatedAt` DATETIME, `CustomerID` INT, `ID` INT, `Province` VARCHAR(50))
+[2026-03-15T12:34:15.636+0000] {logging_mixin.py:188} INFO - [OK] Tabel CustomerAddresses siap
+[2026-03-15T12:34:15.655+0000] {logging_mixin.py:188} INFO - [OK] transformation is done - shape: (4, 6)
+[2026-03-15T12:34:15.890+0000] {logging_mixin.py:188} INFO - [OK] Truncate CustomerAddresses
+[2026-03-15T12:34:15.928+0000] {logging_mixin.py:188} INFO - [OK] 4 rows succedeed load in CustomerAddresses
+[2026-03-15T12:34:15.930+0000] {logging_mixin.py:188} INFO - [DONE] CustomerAddresses done
+[2026-03-15T12:34:15.932+0000] {python.py:201} INFO - Done. Returned value was: None
+[2026-03-15T12:34:15.958+0000] {taskinstance.py:1138} INFO - Marking task as SUCCESS. dag_id=ingestion_pipeline, task_id=transformation_data, execution_date=20260315T123405, start_date=20260315T123413, end_date=20260315T123415
+[2026-03-15T12:34:16.090+0000] {local_task_job_runner.py:234} INFO - Task exited with return code 0
+[2026-03-15T12:34:16.167+0000] {taskinstance.py:3280} INFO - 1 downstream tasks scheduled from follow-on schedule check

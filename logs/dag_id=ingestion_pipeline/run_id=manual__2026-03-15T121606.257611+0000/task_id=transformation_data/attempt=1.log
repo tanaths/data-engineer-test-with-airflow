@@ -1,0 +1,61 @@
+[2026-03-15T12:21:15.617+0000] {taskinstance.py:1956} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: ingestion_pipeline.transformation_data manual__2026-03-15T12:16:06.257611+00:00 [queued]>
+[2026-03-15T12:21:15.637+0000] {taskinstance.py:1956} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: ingestion_pipeline.transformation_data manual__2026-03-15T12:16:06.257611+00:00 [queued]>
+[2026-03-15T12:21:15.638+0000] {taskinstance.py:2170} INFO - Starting attempt 1 of 2
+[2026-03-15T12:21:15.692+0000] {taskinstance.py:2191} INFO - Executing <Task(PythonOperator): transformation_data> on 2026-03-15 12:16:06.257611+00:00
+[2026-03-15T12:21:15.702+0000] {standard_task_runner.py:60} INFO - Started process 893 to run task
+[2026-03-15T12:21:15.708+0000] {standard_task_runner.py:87} INFO - Running: ['airflow', 'tasks', 'run', 'ingestion_pipeline', 'transformation_data', 'manual__2026-03-15T12:16:06.257611+00:00', '--job-id', '11', '--raw', '--subdir', 'DAGS_FOLDER/orchestration_dag.py', '--cfg-path', '/tmp/tmpwl23adw5']
+[2026-03-15T12:21:15.711+0000] {standard_task_runner.py:88} INFO - Job 11: Subtask transformation_data
+[2026-03-15T12:21:15.841+0000] {task_command.py:423} INFO - Running <TaskInstance: ingestion_pipeline.transformation_data manual__2026-03-15T12:16:06.257611+00:00 [running]> on host 3a186f53669c
+[2026-03-15T12:21:16.011+0000] {taskinstance.py:2480} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='airflow' AIRFLOW_CTX_DAG_ID='ingestion_pipeline' AIRFLOW_CTX_TASK_ID='transformation_data' AIRFLOW_CTX_EXECUTION_DATE='2026-03-15T12:16:06.257611+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2026-03-15T12:16:06.257611+00:00'
+[2026-03-15T12:21:16.953+0000] {logging_mixin.py:188} WARNING - /opt/airflow/dags/../scripts/transformation2.py:202 UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+[2026-03-15T12:21:16.958+0000] {logging_mixin.py:188} INFO - [INFO] 4 table will be transformed
+[2026-03-15T12:21:16.967+0000] {logging_mixin.py:188} INFO - 
+=== customers_raw -> Customers (LoadType: FULL) ===
+[2026-03-15T12:21:16.970+0000] {logging_mixin.py:188} WARNING - /opt/airflow/dags/../scripts/transformation2.py:175 UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+[2026-03-15T12:21:16.975+0000] {logging_mixin.py:188} INFO - [OK] 4 columns from metadata
+[2026-03-15T12:21:16.977+0000] {logging_mixin.py:188} WARNING - /opt/airflow/dags/../scripts/transformation2.py:20 UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+[2026-03-15T12:21:16.983+0000] {taskinstance.py:2698} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.8/site-packages/mysql/connector/connection_cext.py", line 535, in cmd_query
+    self._cmysql.query(query,
+_mysql_connector.MySQLInterfaceError: Table 'de_database.customers_raw' doesn't exist
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.8/site-packages/pandas/io/sql.py", line 2202, in execute
+    cur.execute(sql, *args)
+  File "/home/airflow/.local/lib/python3.8/site-packages/mysql/connector/cursor_cext.py", line 269, in execute
+    result = self._cnx.cmd_query(stmt, raw=self._raw,
+  File "/home/airflow/.local/lib/python3.8/site-packages/mysql/connector/connection_cext.py", line 540, in cmd_query
+    raise errors.get_mysql_exception(exc.errno, msg=exc.msg,
+mysql.connector.errors.ProgrammingError: 1146 (42S02): Table 'de_database.customers_raw' doesn't exist
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.8/site-packages/airflow/models/taskinstance.py", line 433, in _execute_task
+    result = execute_callable(context=context, **execute_callable_kwargs)
+  File "/home/airflow/.local/lib/python3.8/site-packages/airflow/operators/python.py", line 199, in execute
+    return_value = self.execute_callable()
+  File "/home/airflow/.local/lib/python3.8/site-packages/airflow/operators/python.py", line 216, in execute_callable
+    return self.python_callable(*self.op_args, **self.op_kwargs)
+  File "/opt/airflow/dags/orchestration_dag.py", line 15, in run_transformation
+    transformation2.run_all()
+  File "/opt/airflow/dags/../scripts/transformation2.py", line 210, in run_all
+    run(row["SourceObjectName"], row["DestinationObjectName"], load_type)
+  File "/opt/airflow/dags/../scripts/transformation2.py", line 185, in run
+    df_source = get_data(conn, source_object)
+  File "/opt/airflow/dags/../scripts/transformation2.py", line 20, in get_data
+    df = pd.read_sql(f"SELECT * FROM {table_name}", conn)
+  File "/home/airflow/.local/lib/python3.8/site-packages/pandas/io/sql.py", line 635, in read_sql
+    return pandas_sql.read_query(
+  File "/home/airflow/.local/lib/python3.8/site-packages/pandas/io/sql.py", line 2266, in read_query
+    cursor = self.execute(sql, params)
+  File "/home/airflow/.local/lib/python3.8/site-packages/pandas/io/sql.py", line 2214, in execute
+    raise ex from exc
+pandas.errors.DatabaseError: Execution failed on sql 'SELECT * FROM customers_raw': 1146 (42S02): Table 'de_database.customers_raw' doesn't exist
+[2026-03-15T12:21:17.016+0000] {taskinstance.py:1138} INFO - Marking task as UP_FOR_RETRY. dag_id=ingestion_pipeline, task_id=transformation_data, execution_date=20260315T121606, start_date=20260315T122115, end_date=20260315T122117
+[2026-03-15T12:21:17.065+0000] {standard_task_runner.py:107} ERROR - Failed to execute job 11 for task transformation_data (Execution failed on sql 'SELECT * FROM customers_raw': 1146 (42S02): Table 'de_database.customers_raw' doesn't exist; 893)
+[2026-03-15T12:21:17.129+0000] {local_task_job_runner.py:234} INFO - Task exited with return code 1
+[2026-03-15T12:21:17.172+0000] {taskinstance.py:3280} INFO - 0 downstream tasks scheduled from follow-on schedule check
