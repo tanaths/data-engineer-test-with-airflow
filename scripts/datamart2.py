@@ -45,20 +45,24 @@ def load_data(conn):
     try:
         cursor.execute("""
             INSERT INTO DM_SalesReport (Period, Class, Model, Total)
-            SELECT 
-                DATE_FORMAT(InvoiceDate, '%Y-%m') AS Period,
-                CASE 
-                    WHEN Price BETWEEN 100000000 AND 250000000 THEN 'LOW'
-                    WHEN Price BETWEEN 250000001 AND 400000000 THEN 'MEDIUM'
-                    WHEN Price > 400000000 THEN 'HIGH'
+            WITH cte AS (
+                SELECT
+                    DATE_FORMAT(InvoiceDate, '%Y-%m') AS Period,
+                    Model,
+                    SUM(Price) AS Total
+                FROM Sales
+                GROUP BY DATE_FORMAT(InvoiceDate, '%Y-%m'), Model
+            )
+            SELECT
+                Period,
+                CASE
+                    WHEN Total BETWEEN 100000000 AND 250000000 THEN 'LOW'
+                    WHEN Total BETWEEN 250000001 AND 400000000 THEN 'MEDIUM'
+                    WHEN Total > 400000000 THEN 'HIGH'
                 END AS Class,
                 Model,
-                SUM(Price) AS Total
-            FROM Sales
-            GROUP BY 
-                DATE_FORMAT(InvoiceDate, '%Y-%m'),
-                Class,
-                Model
+                Total
+            FROM cte
             ORDER BY Period, Class, Model
         """)
         print("[OK] DM_SalesReport selesai")
